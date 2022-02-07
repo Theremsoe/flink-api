@@ -69,6 +69,7 @@ test-debug:
 	@make .setup-env-file mode=testing;
 	@( \
 		export XDEBUG_MODE=debug,gcstats,trace; \
+		export XDEBUG_SESSION=VSCODE; \
 		env; \
 		./composer exec -- phpunit --verbose --debug --stop-on-failure --testdox; \
 	);
@@ -87,6 +88,7 @@ coverage:
 	@make .setup-env-file mode=testing;
 	@( \
 		export XDEBUG_MODE=coverage; \
+		export XDEBUG_SESSION=VSCODE; \
 		./composer exec -- phpunit --verbose --stop-on-failure --coverage-text; \
 	);
 
@@ -101,6 +103,7 @@ coverage-html:
 	@make .setup-env-file mode=testing;
 	@( \
 		export XDEBUG_MODE=coverage; \
+		export XDEBUG_SESSION=VSCODE; \
 		./composer exec -- phpunit --verbose --stop-on-failure --coverage-html=storage/framework/testing/coverage-report; \
 	);
 
@@ -132,7 +135,11 @@ cs-fixer:
 # built-in development server.
 #
 serve:
-	@php artisan serve --host=0.0.0.0 --port=8000;
+	@( \
+		export XDEBUG_MODE=debug,gcstats,trace; \
+		export XDEBUG_SESSION=VSCODE; \
+		php artisan serve --host=0.0.0.0 --port=8000; \
+	);
 
 # --------------------------------------------------------------------------
 # Tinker
