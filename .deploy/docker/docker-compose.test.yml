@@ -1,0 +1,7 @@
+version: "3.8"
+services:
+    test:
+        container_name: Test-Integration
+        build:
+            context: ../..
+            dockerfile: .deploy/docker/dockerfiles/test.dockerfile

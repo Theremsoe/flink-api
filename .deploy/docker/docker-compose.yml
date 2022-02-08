@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+    proxy:
+        container_name: Proxy-Server
+        build:
+            context: ../..
+            dockerfile: .deploy/docker/dockerfiles/proxy.dockerfile
+        networks:
+            - network
+        ports:
+            - 80:80
+        depends_on:
+            - api
+        links:
+            - api
+    api:
+        container_name: API-Server
+        build:
+            context: ../..
+            dockerfile: .deploy/docker/dockerfiles/dockerfile
+            target: php-api
+        networks:
+            - network
+networks:
+    network:
+        driver: bridge

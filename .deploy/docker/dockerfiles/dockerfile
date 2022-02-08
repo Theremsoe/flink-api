@@ -1,0 +1,22 @@
+#######################################
+# PHP-FPM stage
+#######################################
+FROM php:8.0-cli as php-fpm-stage
+
+WORKDIR /var/www/html
+
+# Copy project
+COPY --chown=www-data:www-data . /var/www/html
+
+# Install all extensions, packages and configure project
+RUN bash .deploy/bash/setup.php.sh
+RUN bash .deploy/bash/setup.php-swoole.sh
+USER www-data
+RUN make install mode=production
+
+
+#######################################
+# PHP API Server
+#######################################
+FROM php-fpm-stage as php-api
+CMD make db-migrate && make serve mode=production

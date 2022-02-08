@@ -136,9 +136,14 @@ cs-fixer:
 #
 serve:
 	@( \
-		export XDEBUG_MODE=debug,gcstats,trace; \
-		export XDEBUG_SESSION=VSCODE; \
-		php artisan serve --host=0.0.0.0 --port=8000; \
+		if [ "$(mode)" = "production" ]; then \
+			php artisan octane:install --server=swoole; \
+			php artisan octane:start --workers=4 --task-workers=6 --host=0.0.0.0 --port=8000; \
+		else \
+			export XDEBUG_MODE=debug,gcstats,trace; \
+			export XDEBUG_SESSION=VSCODE; \
+			php artisan serve --host=0.0.0.0 --port=8000; \
+		fi; \
 	);
 
 # --------------------------------------------------------------------------
@@ -226,7 +231,7 @@ install: .composer .setup-env-file .setup-application-key .setup-artisan-optimiz
 
 reinstall: clean install
 
-deploy: .prune-deploy .setup-env-file
+deploy: .clean-containers .setup-env-file
 	@( \
 		echo "Deploy in $(mode) mode"; \
 		if [ "$(mode)" = "testing" ]; then \
@@ -238,7 +243,6 @@ deploy: .prune-deploy .setup-env-file
 					--env-file .env \
 					--project-name="$$APP_NAME" \
 					-f .deploy/docker/docker-compose.local.yml \
-					-f .deploy/docker/docker-compose.store.yml \
 					-f .deploy/docker/docker-compose.database.yml \
 					up --detach --build; \
 			else \
@@ -280,7 +284,7 @@ deploy: .prune-deploy .setup-env-file
 		fi; \
 	);
 
-.prune-deploy: .clean-containers .setup-env-file
+.prune-deploy:
 	@( \
 		source .env; \
 		app_name="$${APP_NAME// /}"; \

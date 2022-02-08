@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+    api:
+        container_name: API-Server
+        build:
+            context: ../..
+            dockerfile: .deploy/docker/dockerfiles/local.dockerfile
+            target: php-api
+        networks:
+            - network
+        ports:
+            - 8000:8000
+        volumes:
+            - volume:/var/www/html
+            - /var/www/html/vendor
+        environment:
+            WAIT_HOSTS: database:${DB_PORT}
+        depends_on:
+            - database
+        links:
+            - database
+networks:
+    network:
+        driver: bridge
+volumes:
+    volume: {}
