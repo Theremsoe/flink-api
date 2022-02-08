@@ -9,6 +9,8 @@
         "ext-pdo": "*",
         "ext-pdo_pgsql": "*",
         "ext-zip": "*",
+        "ext-pcntl": "*",
+        "ext-swoole": "*",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel-json-api/laravel": "^1.0",
