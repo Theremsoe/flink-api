@@ -20,9 +20,9 @@ class CompanyFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->sentence,
-            'description' => $this->faker->paragraph,
-            'symbol' => $this->faker->paragraph,
+            'name' => $this->faker->text(50),
+            'description' => $this->faker->text(100),
+            'symbol' => $this->faker->text(10),
             'market' => $this->faker->words(),
         ];
     }
