@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use LaravelJsonApi\Exceptions\ExceptionParser;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -21,9 +22,6 @@ class Handler extends ExceptionHandler
      * @var array<int, string>
      */
     protected $dontFlash = [
-        'current_password',
-        'password',
-        'password_confirmation',
     ];
 
     /**
@@ -31,7 +29,8 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-        });
+        $this->renderable(
+            ExceptionParser::make()->acceptsAll()->acceptsMiddleware('api')->renderable()
+        );
     }
 }

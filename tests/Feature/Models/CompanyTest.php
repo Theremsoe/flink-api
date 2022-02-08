@@ -39,7 +39,6 @@ class CompanyTest extends TestCase
                 'name' => $company->name,
                 'description' => $company->description,
                 'symbol' => $company->symbol,
-                'market' => json_encode($company->market),
             ]
         );
     }
@@ -85,7 +84,7 @@ class CompanyTest extends TestCase
     }
 
     /**
-     * @testdox Check that market column store right JSONn data
+     * @testdox Check that market column store right JSON data
      */
     public function testCasteableMarkets(): void
     {
