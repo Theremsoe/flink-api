@@ -3,7 +3,9 @@
 namespace Database\Factories;
 
 use App\Models\Company;
+use DateTime;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Collection;
 
 class CompanyFactory extends Factory
 {
@@ -23,7 +25,13 @@ class CompanyFactory extends Factory
             'name' => $this->faker->text(50),
             'description' => $this->faker->text(100),
             'symbol' => $this->faker->text(10),
-            'market' => $this->faker->words(),
+            'market' => Collection::times(
+                $this->faker->randomDigitNotZero(),
+                fn ($key): array => [
+                    'datetime' => now()->addDay($key)->format(DateTime::RFC3339_EXTENDED),
+                    'value' => $this->faker->randomFloat(nbMaxDecimals: 2, max: 100),
+                ]
+            ),
         ];
     }
 }

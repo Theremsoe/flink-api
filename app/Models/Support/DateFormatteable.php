@@ -2,7 +2,7 @@
 
 namespace App\Models\Support;
 
-use DateTimeInterface;
+use DateTime;
 
 /**
  * Homologate property "dateFormat" with a format that support milliseconds.
@@ -14,6 +14,6 @@ trait DateFormatteable
      */
     public function getDateFormat(): string
     {
-        return DateTimeInterface::RFC3339_EXTENDED;
+        return DateTime::RFC3339_EXTENDED;
     }
 }
